@@ -1,0 +1,10 @@
+- Open Chrome
+- Open terminal and 'ruby watch.rb'
+
+- Open Sublime Text console
+	- view.settings().set('myautosave', True)
+	OR
+	- view.settings().set('myautosave', False)
+
+	To View
+	- view.settings().get('myautosave')
