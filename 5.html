@@ -1,0 +1,127 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D3 Demos</title>
+    <script type="text/javascript" src="d3/d3.v2.js"></script>
+  </head>
+  <body>
+    <style type="text/css">
+    </style>
+    <script type="text/javascript">
+// In this example, we will "mock" refreshing the
+// dataset (using setInterval), and then 
+// update the chart dynamically everytime 
+// "new" data comes in 
+
+      var svg = d3.select('body').append("svg"),
+          w = 300,
+          h = 300,
+          index = -1; 
+
+     var w = 300, h = 300;
+
+      svg.attr({
+        width: w, 
+        height: h
+      }).style("border", "2px solid #f00"); 
+
+      var dataset = [
+        {"time": ++index, "value": 21},
+        {"time": ++index, "value": 101},
+        {"time": ++index, "value": 30},
+        {"time": ++index, "value": 71}
+      ];
+
+      function rand() {
+        return Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+      }
+
+      var interval = setInterval(function() {
+        refresh();
+        dataset.shift();
+        dataset.push({ "time": ++index, "value": (Math.floor(Math.random() * (100 - 10 + 1)) + 10) })
+      }, 1500);
+
+      function stop() {
+        clearInterval(interval);
+      }
+
+      function refresh() {
+        var rects = svg.selectAll("rect")
+                  .data(dataset, function(d) { 
+                    return d.time; 
+                  });
+
+        rects
+          .enter()
+          .append("rect")
+            .attr({
+              width: 20,
+              height: function(d) { return d.value },
+// STOP USING THE TIME Construct coz it makes little sense  
+              x: function(d, i) { return (i+1)*25 },
+              y: function(d) { return 300-d.value }
+            })
+          .transition()
+            .duration(1000)
+            .attr({
+              x: function(d, i) { return i*25 }
+            });
+
+        rects
+          .transition()
+            .duration(1000)
+            .attr({ x: function(d, i) { return i*25; } });
+
+        rects
+          .exit()
+          .transition()
+            .duration(1000)
+            .attr({
+              x: function(d, i) { return (i-1)*25; }
+            })
+          .remove();
+
+        var texts = svg.selectAll("text")
+          .data(dataset, function(d) { 
+            return d.time; 
+          });
+          
+        texts.enter()
+          .append("text")
+            .attr({
+              x: function(d, i) { return (i+1)*25+10 },
+              y: function(d) { return 300-d.value+10 },
+              fill: "white",
+              "font-family": "sans-serif",
+              "font-size": 11,
+              "text-anchor": "middle"
+            })
+            .text(function(d) {return d.value;})
+          .transition()
+            .duration(1000)
+            .attr({ 
+              x: function(d, i) { return i*25+10; } 
+            });; 
+
+        texts
+          .transition()
+            .duration(1000).attr({ x: function(d, i) { return i*25+10; } });
+
+        texts
+          .exit()
+          .transition()
+            .duration(1000)
+            .attr({
+              x: function(d, i) { return (i-1)*25+10; }
+            })
+          .remove();
+
+      }
+    </script>
+
+    <button onclick="stop();">Stop</button>
+
+  </body>
+</html>

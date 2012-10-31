@@ -1,0 +1,33 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D3 Demos</title>
+    <script type="text/javascript" src="d3/d3.v2.js"></script>
+  </head>
+  <body>
+    <style type="text/css">
+    </style>
+    <script type="text/javascript">
+// Basic example to demonstrate how D3 binds Data to ANY
+// DOM Element
+      var dataset = [
+        {"time": 1, "value": 21},
+        {"time": 2, "value": 101}, 
+        {"time": 3, "value": 30},
+        {"time": 4, "value": 71}
+      ];
+
+      d3.select("body")
+        .append("ul")
+        .selectAll("li")
+          .data(dataset)
+          .enter()
+        .append("li") 
+          .text(function(d){
+            return "At time " + d.time + " the number of visitors was " + d.value;
+          });
+    </script>
+  </body>
+</html>
+  
