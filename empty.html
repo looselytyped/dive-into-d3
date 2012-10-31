@@ -1,0 +1,27 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D3 Demos</title>
+    <script type="text/javascript" src="d3/d3.v2.js"></script>
+  </head>
+  <body>
+    <style type="text/css">
+    </style>
+    <script type="text/javascript">
+      var svg = d3.select('body').append("svg");
+
+      svg.attr({
+        width: 300,
+        height: 300
+      }).style("border", "2px solid #f00");
+
+      var dataset = [
+        {"time": 1, "value": 21},
+        {"time": 2, "value": 101},
+        {"time": 3, "value": 30},
+        {"time": 4, "value": 71}
+      ];
+    </script>
+  </body>
+</html>  
