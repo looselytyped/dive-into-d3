@@ -11,5 +11,5 @@ dir = Dir.pwd
 Listen.to(dir) do |modified, added, removed|
     commands.each do |command|
       %x[osascript -e 'tell application "#{command[:tell]}" to #{command[:to]}']
-    end 
-end 
+    end
+end

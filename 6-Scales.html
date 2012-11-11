@@ -26,8 +26,9 @@
       var svg = d3.select('body').append("svg"),
           w = 300,
           h = 300,
-          i = -1,
-          margin = 20;
+          margin = 20,
+          barWidth = 20,
+          i = -1; 
 
       svg.attr({
         width: w,
@@ -44,14 +45,14 @@
       var x = d3.scale.linear()
 //use the dataset.length for max x
           .domain([0, dataset.length])
-          .range([margin, w-margin*2]);
+          .rangeRound([margin, w-(margin*2)]);
 
 // supply a function to determine max
       var y = d3.scale.linear()
           .domain([0, d3.max(dataset, function(d) {
             return d.value;
           })])
-          .rangeRound([h-margin, margin]);    
+          .range([h-(margin*2), margin]);    
 
       var rects = svg.selectAll("rect").data(dataset);
 
@@ -59,13 +60,13 @@
         .enter()
         .append("rect")
           .attr({
-            height: function(d) { return d.value; },
-            // height: function(d) { return h-margin-y(d.value); },
-            y: function(d) { return h-d.value },
+            y: function(d) { return h-d.value-margin },
             // y: function(d) { return y(d.value); },
-            x: function(d) { return d.time*25 },
+            x: function(d) { return d.time*(barWidth+5)+margin; },
             // x: function(d) { return x(d.time); },
-            width: 20,
+            height: function(d) { return d.value; },
+            // height: function(d) { return h-y(d.value)-margin; },
+            width: 20
           });
 
       var texts = svg.selectAll("text")
@@ -76,9 +77,9 @@
       texts.enter()
         .append("text")
           .attr({
-            x: function(d) { return d.time*25+10 },
+            x: function(d) { return d.time*(barWidth+5)+margin+10 },
             // x: function(d) { return x(d.time)+10 },
-            y: function(d) { return 300-d.value+10 },
+            y: function(d) { return h-d.value-margin+10 },
             // y: function(d) { return y(d.value)+10 },
             fill: "white",
             "font-family": "sans-serif",
@@ -87,15 +88,25 @@
           })
           .text(function(d) {return d.value;}); 
 
-      // var xAxis = d3.svg.axis()
-      //                   .scale(x) 
-      //                   .orient("bottom")
-      //                   .tickPadding(4);
+      // var xAxis = d3.svg.axis() //axis function
+      //                   .scale(x) //scale it right
+      //                   .orient("bottom") // ticks appear below the axis
+      //                   .ticks(4); //suggest 4 ticks
 
       // svg.append("g")
       //     .attr("class", "axis")
       //     .attr("transform", "translate(0," + (h-margin) + ")")
       //     .call(xAxis);
+
+      // var yAxis = d3.svg.axis() //axis function
+      //                   .scale(y) //scale it right
+      //                   .orient("left") // ticks appear below the axis
+      //                   .ticks(5); //suggest 4 ticks
+
+      // svg.append("g")
+      //     .attr("class", "axis")
+      //     .attr("transform", "translate(" + (margin) + ", 0)")
+      //     .call(yAxis);
     </script>
   </body>
 </html>
