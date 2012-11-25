@@ -10,13 +10,14 @@
     </style>
     <script type="text/javascript">
       var dataset = [
-          { name: "beets", start: "Jan 1", end: "Dec 31" },
-          { name: "celery", start: "Jan 1", end: "Dec 31" },
-          { name: "okra", start: "June 15", end: "Oct 31" },
-          { name: "eggplant", start: "June 15", end: "Sep 15" },
-          { name: "corn", start: "June 15", end: "Sep 15" },
-          { name: "carrots", start: "Sept 15", end: "June 15" },
-          { name: "new potatoes", start: "Mar 15", end: "Sep 15" },
+          { name: "beets", start: "Jan 1, 2011", end: "Dec 31, 2011" },
+          { name: "celery", start: "Jan 1, 2011", end: "Dec 31, 2011" },
+          { name: "okra", start: "June 15, 2011", end: "Oct 31, 2011" },
+          { name: "eggplant", start: "June 15, 2011", end: "Sep 15, 2011" },
+          { name: "corn", start: "June 15, 2011", end: "Sep 15, 2011" },
+          { name: "carrots", start: "Sept 15, 2011", end: "June 15, 2012" },
+          { name: "new potatoes", start: "Mar 15, 2011", end: "Sep 15, 2011" },
+          { name: "turnip", start: "Oct 1, 2011", end: "Mar 31, 2012" },
         ],
           width = 700,
           height = width,
@@ -72,8 +73,8 @@
         var ret = [];
 
         function parseDates(d) {
-          var start = Date.parse(d.start+", "+year);
-          var end = Date.parse(d.end+", "+year);
+          var start = Date.parse(d.start);
+          var end = Date.parse(d.end);
 
           ret.push({
             name: d.name,
