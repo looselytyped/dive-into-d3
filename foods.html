@@ -1,0 +1,128 @@
+<!DOCTYPE>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>D3 Demos</title>
+  <script type="text/javascript" src="d3/d3.v2.js"></script>
+</head>
+<body>
+  <style type="text/css">
+  </style>
+  <script type="text/javascript">
+  var dataset = [
+  { name: "beets", start: "Jan 1, 2011", end: "Dec 31, 2011" },
+  { name: "celery", start: "Jan 1, 2011", end: "Dec 31, 2011" },
+  { name: "okra", start: "June 15, 2011", end: "Oct 31, 2011" },
+  { name: "eggplant", start: "June 15, 2011", end: "Sep 15, 2011" },
+  { name: "corn", start: "June 15, 2011", end: "Sep 15, 2011" },
+  { name: "carrots", start: "Sept 15, 2011", end: "June 15, 2012" },
+  { name: "new potatoes", start: "Mar 15, 2011", end: "Sep 15, 2011" },
+  { name: "turnip", start: "Oct 1, 2011", end: "Mar 31, 2012" },
+  ],
+  width = 700,
+  height = width,
+  radius = Math.min(width, height) / 2 / (dataset.length+1),
+  titleRadius = radius,
+  arcWidth = (radius / (dataset.length+1));
+
+  var fill = d3.scale.linear()
+  .range(["hsl(-180, 50%, 50%)", "hsl(180, 50%, 50%)"])
+  .interpolate(d3.interpolateString);
+
+  var arc = d3.svg.arc()
+  .startAngle(function(d) { return d.start; })
+  .endAngle(function(d) { return d.end; })
+  .innerRadius(function(d, i) { return (i) * radius + titleRadius; })
+  .outerRadius(function(d, i) { return (i) * radius + titleRadius + 25; });
+
+  var vis = d3.select("body")
+  .append("svg")
+  .attr({
+    width: width,
+    height: height
+  }).style("border", "2px solid #f00")
+  .append("g")
+  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  var g = vis.selectAll("g")
+  .data(data)
+  .enter().append("g");
+
+  g.append("path")
+  .style("fill", function(d, i) { return fill(i/10); })
+  .attr("d", arc)
+  .append("svg:title")
+  .text(function(d) {
+    return d.name + " - Available from " + d.startDate + " to " + d.endDate;
+  });
+
+      // draw title arcs
+      [[.1, Math.PI/2-.1],
+      [Math.PI/2, Math.PI-.1],
+      [Math.PI, Math.PI*1.5-.1],
+      [Math.PI*1.5, Math.PI*2]].forEach(function(d) {
+        var title1 = d3.svg.arc()
+        .startAngle(d[0])
+        .endAngle(d[1])
+        .innerRadius(10)
+        .outerRadius(titleRadius-2);
+
+        g.append("path")
+        .style("fill", "#000")
+        .attr("d", title1);
+      });
+
+      var titleArc = d3.svg.arc()
+        .startAngle(0)
+        .endAngle(Math.PI/2)
+        .innerRadius(10)
+        .outerRadius(20);
+
+      vis.append("defs").append("path")
+      .attr("id", "s3")
+      .attr("d", titleArc);
+
+      var thing = vis.append("g")
+      .attr("id", "thing")
+      .style("fill", "#fff");
+
+      thing.append("text")
+      .style("font-size", "14px")
+      .append("textPath")
+      .attr("xlink:href", "#s3")
+      .attr("text-anchor", "right")
+      .text("Dec");
+
+
+      function data() {
+        var year = new Date().getFullYear();
+        var yearStart = Date.parse("Jan 1, " + year);
+        var yearEnd = Date.parse("Dec 31, " + year);
+        var ret = [];
+
+        function parseDates(d) {
+          var start = Date.parse(d.start);
+          var end = Date.parse(d.end);
+
+          ret.push({
+            name: d.name,
+            startDate: d.start,
+            endDate: d.end,
+            start: millisToRadians(start-yearStart),
+            end: millisToRadians(end-yearStart)
+          });
+        }
+
+        function millisToRadians(millis) {
+          // if numOfMillisInAYear:360_Deg::millis::x_Degrees
+          var degrees = (millis * 360) / (yearEnd - yearStart);
+          return degrees * Math.PI / 180;
+        }
+
+        dataset.forEach(parseDates);
+        return ret;
+      }
+
+      </script>
+    </body>
+    </html>

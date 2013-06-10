@@ -2,7 +2,7 @@ require 'rubygems'
 require 'listen'
 
 commands = [
-  { :tell => "Google Chrome", :to => "activate" },
+  { :tell => "Firefox", :to => "activate" },
   { :tell => "System Events", :to => "keystroke \"r\" using command down" },
   { :tell => "Sublime Text 2", :to => "activate" }
 ]
